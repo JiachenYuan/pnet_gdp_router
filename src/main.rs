@@ -34,7 +34,7 @@ const LOCAL: Ipv4Addr = Ipv4Addr::new(128,32,37,82);
 fn handle_gdp_packet(interface_name: &str, source: IpAddr, destination: IpAddr, packet: &[u8], udp: &UdpPacket, tx: &Box<dyn DataLinkSender>) -> Option<Vec<u8>> {
     let gdp_protocol_packet = GdpProtocolPacket::new(packet);
     if let Some(gdp) = gdp_protocol_packet {
-        println!("{:?}\n", gdp);
+        // println!("{:?}\n", gdp);
 
         // create new gdp packet
         // let mut vec: Vec<u8> = vec![0; packet.len()];
@@ -46,7 +46,7 @@ fn handle_gdp_packet(interface_name: &str, source: IpAddr, destination: IpAddr, 
         res_gdp.set_src_gdpname(&gdp.get_dst_gdpname());
         res_gdp.set_dst_gdpname(&gdp.get_src_gdpname());
         res_gdp.set_payload(("echo".to_owned() +  &String::from_utf8(gdp.payload().to_vec()).unwrap()).as_bytes());
-        println!("{:?}", String::from_utf8(res_gdp.payload().to_vec()));
+        // println!("{:?}", String::from_utf8(res_gdp.payload().to_vec()));
         // println!("The constructed gdp packet is = {:?}\n", res_gdp);
         // println!("The buffer for the above packet is = {:?}\n", vec);
         Some(vec)
@@ -68,7 +68,7 @@ fn handle_udp_packet(interface_name: &str, source: IpAddr, destination: IpAddr, 
                 let mut res_udp = MutableUdpPacket::new(&mut vec[..]).unwrap();
                 res_udp.clone_from(&udp);
                 res_udp.set_payload(&payload);
-                println!("Constructed UDP packet = {:?}", res_udp);
+                // println!("Constructed UDP packet = {:?}", res_udp);
                 Some(vec)
             } else {None}
         } else {None}
@@ -160,7 +160,7 @@ fn handle_ethernet_frame(interface: &NetworkInterface, ethernet: &EthernetPacket
                 res_ether.set_source(interface.mac.unwrap());
                 
                 
-                println!("{:?}", res_ether);
+                // println!("{:?}", res_ether);
                 let result = tx.send_to(res_ether.packet(), None);
                 match result {
                     Some(Ok(temp))=>println!("{:?}", temp),
